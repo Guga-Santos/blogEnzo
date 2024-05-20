@@ -1,0 +1,34 @@
+version: '3'
+services:
+  node:
+    image: node:latest
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    container_name: container_blog_enzo
+    restart: always
+    volumes:
+      - ./:/app
+    ports:
+      - "3001:3001"
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: database
+      MYSQL_PORT: 3306
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: mysql:8.0.29
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog_do_enzo
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+    ports:
+      - "33060:3306"
