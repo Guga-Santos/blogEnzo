@@ -8,6 +8,7 @@ const userService = {
             displayName: Joi.string().min(8).required(),
             email: Joi.string().email().required(),
             password: Joi.string().required(),
+            image: Joi.string().required(),
         });
 
         const auth = schema.validate(newUser);
@@ -19,7 +20,7 @@ const userService = {
         return value;
     },
     generateToken: async (userInfos) => {
-        const token = jwt.sign({ data: userInfos }, process.env.JWT_SECRET);
+        const token = jwt.sign({ data: userInfos }, process.env.JWT_SECRET || "platina2");
 
         return token;
     },
@@ -28,7 +29,9 @@ const userService = {
         return user;
     },
     getUsers: async () => {
-        const users = await User.findAll();
+        const users = await User.findAll({
+            attributes: { exclude: ['password']}
+        });
 
         return users;
     },
@@ -39,9 +42,9 @@ const userService = {
             attributes: { exclude: ['password'] }
         })
 
-        if (!user) return { code: 404, message: { message: 'User does not exist' } };
+        if (!user) return false;
 
-        return user;
+        return true;
     },
     findUserByID: async (id) => {
         const user = await User.findOne({
