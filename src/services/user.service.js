@@ -24,7 +24,7 @@ const userService = {
         return token;
     },
     createUser: async (newUser) => {
-        const user = await models.User.create(newUser);
+        const user = await User.create(newUser);
         return user;
     },
     getUsers: async () => {
@@ -39,7 +39,7 @@ const userService = {
             attributes: { exclude: ['password'] }
         })
 
-        if (!findUser) return { code: 404, message: { message: 'User does not exist' } };
+        if (!user) return { code: 404, message: { message: 'User does not exist' } };
 
         return user;
     },
@@ -50,7 +50,7 @@ const userService = {
             attributes: { exclude: ['password'] }
         })
 
-        if (!findUser) return { code: 404, message: { message: 'User does not exist' } };
+        if (!user) return { code: 404, message: { message: 'User does not exist' } };
 
         return user;
     },
