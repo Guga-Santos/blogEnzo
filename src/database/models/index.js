@@ -9,6 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 import UserModel from './user.model.js';
+import PostModel from './post.model.js';
 
 
 import config from '../config/config.js';
@@ -20,6 +21,11 @@ const sequelize = new Sequelize({
 
 
 const User = UserModel(sequelize, DataTypes);
+const Post = PostModel(sequelize, DataTypes);
 
 
-export { User, sequelize, Sequelize };
+export { 
+    User,
+    Post, 
+    sequelize, 
+    Sequelize };

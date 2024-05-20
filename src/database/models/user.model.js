@@ -10,6 +10,12 @@ const UserModel = (sequelize, DataTypes) => {
         image: DataTypes.STRING
     }, { timestamps: false });
 
+    User.associate = (models) => {
+        User.hasMany(models.Post, {
+            foreingKey: 'userId', as: 'posts',
+        })
+    }
+
     return User;
 }
 
